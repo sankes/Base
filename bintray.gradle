@@ -1,0 +1,110 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+def siteUrl = 'https://github.com/sankes/Groovy'   // project homepage
+def issueUrl = 'https://github.com/sankes/Groovy/issues'
+def gitUrl = 'https://github.com/sankes/Groovy.git'
+
+// 配置引用路径
+group = 'com.shankes.util' // 组名
+def package_artifact = "util"
+version = '1.0.0' // 版本
+
+// 生成源文件
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = "sources"
+}
+// 生成javaDoc文档
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+// 文档打包成jar
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = "javadoc"
+    from javadoc.destinationDir
+}
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+// 拷贝javadoc文件
+task copyDoc(type: Copy) {
+    from "${buildDir}/docs/"
+    into "docs"
+}
+// 上传到JCenter需要的源码文件
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// 配置maven库，生成pom.xml文件
+install {
+    repositories.mavenInstaller {
+        // This generates pom.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                artifactId package_artifact
+                name package_artifact  // 项目描述
+                url siteUrl                 // 项目主页
+                // 开源协议
+                licenses {
+                    license {
+                        name 'The Apche Software License, Version 2.0'
+                        url 'http://wwww.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                // 开发者信息
+                developers {
+                    developer {
+                        id 'shankes'
+                        name 'shankes'
+                        email '512925636@qq.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+    // 上传到JCenter
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    bintray {
+        user = properties.getProperty("bintray.user")// local.properties文件中的bintray用户名
+        key = properties.getProperty("bintray.apikey")// local.properties文件中的bintray密码
+        configurations = ['archives']
+        pkg {
+            repo = 'maven'                  // 需要上传的仓库名
+            name = package_artifact               // 上传到jcenter的项目名
+            desc = 'android common util'    // 项目描述
+            //userOrg = 'bintray_user'      // 可选的,不传的话默认是上面的user
+            websiteUrl = siteUrl            // 项目的github地址
+            issueTrackerUrl = issueUrl
+            vcsUrl = gitUrl                 // git仓库地址这里的地址是不会验证的,随便输入都可以,不配置也可以
+            labels = ['android', 'util']
+            licenses = ['Apache-2.0']// 开源许可
+            publish = true
+        }
+        override = true
+    }
+
+    // 项目注释编码格式
+    javadoc {
+        options {
+            // 如果你的项目里面有中文注释的话，必须将格式设置为UTF-8，不然会出现乱码
+            encoding 'UTF-8'
+            charSet 'UTF-8'
+            author true
+            version true
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
+}

@@ -1,0 +1,34 @@
+{
+  "applicationId": "com.shankes.util",
+  "versionCode": 1,
+  "versionName": "v 1.0.0",
+
+  "clientKey": "shankes-android",
+  "keyAlias": "shankes",
+  "keyPassword": "222222",
+  "keyStorePassword": "222222",
+
+  "appName": "appName",
+
+  "apiPreview": "https://www.shankes.com/preview/test-mobile-api",
+  "apiRelease": "https://www.shankes.com/test-mobile-api",
+
+  "imAppId": "",
+  "imAppToken": "",
+
+  "mobAppKey": "",
+
+  "mobAppSecret": "",
+  "baiduAppKey": "",
+
+  "umengAppKey": "",
+  "umengAppSecret": "",
+  "umengPackageName": "",
+  "umengChannel": "",
+
+  "buglyAppId": "",
+  "buglyAppKey": "",
+
+  "qqAppId": "",
+  "qqAppKey": ""
+}

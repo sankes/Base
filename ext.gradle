@@ -1,0 +1,241 @@
+import groovy.json.JsonSlurper
+
+//这里的ext是必须的
+ext {
+//    // 本地文件local.properties中获取私密信息
+//    Properties properties = new Properties()
+//    File bintrayPropertiesFile = project.rootProject.file("bintray.properties")
+//    if (bintrayPropertiesFile.exists()) {
+//        properties.load(bintrayPropertiesFile.newDataInputStream())
+//    }
+//    File localPropertiesFile = project.rootProject.file("local.properties")
+//    if (localPropertiesFile.exists()) {
+//        properties.load(localPropertiesFile.newDataInputStream())
+//    }
+    // 本地文件config/setting.json中获取不同风味下不同app的配置信息
+    def inputFile = new File("${getProject().getRootDir().path}" + File.separator + "config" + File.separator + "setting.json")
+    // app配置信息  直接获取
+    appConfig = new JsonSlurper().parseText(inputFile.text)
+
+    dexConf = [
+            dexInProcess   : true,
+            javaMaxHeapSize: "1536m",
+            jumboMode      : true,
+            preDexLibraries: true,
+            threadCount    : 4
+    ]
+    // 使用的地图类型
+    mapType = "baidu"// 百度地图
+//    mapType = "amap"// 高德地图
+
+    dependVersion = [
+            support: "26.0.2"
+    ]
+
+    android = [
+            compileSdkVersion   : 26,
+            buildToolsVersion   : '26.0.2',
+            minSdkVersion       : 17,
+            targetSdkVersion    : 26,
+            defaultPublishConfig: 'release',
+            publishNonDefault   : true
+    ]
+
+    dependencies = [
+            // 基础支持
+            appcompat_v7                      : 'com.android.support:appcompat-v7:${dependVersion.support}',
+            support_design                    : 'com.android.support:design:${dependVersion.support}',
+            support_v4                        : 'com.android.support:support-v4:${dependVersion.support}',
+            // constraint_layout
+            constraint_layout                 : 'com.android.support.constraint:constraint-layout:1.1.0',
+
+            // Test
+            junit                             : 'junit:junit:4.12',
+            test_runner                       : 'com.android.support.test:runner:1.0.2',
+            espresso_core                     : 'com.android.support.test.espresso:espresso-core:3.0.2',
+
+            // Tinker is a hot-fix solution library for Android, it supports dex, library and resources update without reinstalling apk.
+            // optional, help to generate the final application
+            tinker_android_anno               : 'com.tencent.tinker:tinker-android-anno:1.9.1',// provided
+            // tinker's main Android lib
+            tinker_android_lib                : 'com.tencent.tinker:tinker-android-lib:1.9.1',// compile
+
+            // 常用控件
+            // recyclerView
+            recyclerview_v7                   : 'com.android.support:recyclerview-v7:${dependVersion.support}',
+            // flexbox
+            flexbox                           : 'com.google.android:flexbox:1.0.0',
+            // 圆形图片
+            roundedimageview                  : 'com.makeramen:roundedimageview:2.2.1',
+            // PickerView
+            Android_PickerView                : 'com.contrarywind:Android-PickerView:3.2.5',
+            // XTabLayout
+            XTabLayout                        : 'com.androidkun:XTabLayout:1.1.1',
+            status_bar_compat                 : 'com.githang:status-bar-compat:0.3',
+            // BottomTabBar
+            BottomTabBar                      : 'com.github.AndroidAndYang:BottomTabBar:v1.0.0',
+            // SwipeToLoadLayout
+            SwipeToLoadLayout                 : 'com.github.Aspsine:SwipeToLoadLayout:1.0.4',
+            // wo wo viewpager  引导页guide
+            wowoviewpager                     : 'com.nightonke:wowoviewpager:2.0.0',
+            // page indicator view  指示器
+            pageindicatorview                 : 'com.romandanylyk:pageindicatorview:1.0.1@aar',
+
+            // 腾讯Bugly Android 应用升级
+            crashreport                       : 'com.tencent.bugly:crashreport:latest.release',
+            crashreport_native                : 'com.tencent.bugly:nativecrashreport:latest.release',
+
+            // 用于建立OkHttpStack，支持Volley使用Okhttp来作为传输层
+            okhttp_urlconnection              : 'com.squareup.okhttp:okhttp-urlconnection:2.7.5',
+            // 网络请求封装库 适合进行数据量不大，但通信频繁的网络操作 https://github.com/google/volley
+            volley                            : 'com.android.volley:volley:1.1.1',
+            /*一般的get请求
+            一般的post请求
+            基于Http的文件上传
+            文件下载
+            加载图片
+            支持请求回调，直接返回对象、对象集合
+            支持session的保持*/
+            okhttp                            : 'com.squareup.okhttp3:okhttp:3.3.1',
+            // okhttp log controller
+            okhttp_logging                    : 'com.squareup.okhttp3:logging-interceptor:3.3.1',
+            // okhttp内部依赖okio，同时导入okio
+            okio                              : 'com.squareup.okio:okio:1.9.0',
+            // Okgo         网络加载库
+            okgo                              : 'com.lzy.net:okgo:+',
+            // 以下三个选择添加，okrx和okrx2不能同时使用
+            okrx                              : 'com.lzy.net:okrx:+',
+            okrx2                             : 'com.lzy.net:okrx2:+',
+            okserver                          : 'com.lzy.net:okserver:+',
+            // okhttputils
+            okhttputils                       : 'com.lzy.net:okhttputils:1.8.1',
+            okhttpserver                      : 'com.lzy.net:okhttpserver:1.0.3',
+
+            // json解析库
+            gson                              : 'com.google.code.gson:gson:2.8.0',
+
+            jackson_core                      : 'com.fasterxml.jackson.core:jackson-core:2.7.3',
+            jackson_annotations               : 'com.fasterxml.jackson.core:jackson-annotations:2.7.3',
+            jackson_databind                  : 'com.fasterxml.jackson.core:jackson-databind:2.7.3',
+
+            // 图片glide  https://github.com/bumptech/glide
+            // https://muyangmin.github.io/glide-docs-cn/doc/download-setup.html
+            glide                             : 'com.github.bumptech.glide:glide:4.8.0',
+            glide_compiler                    : 'com.github.bumptech.glide:compiler:4.8.0',// annotationProcessor
+            // Glide常用transformation    https://github.com/wasabeef/glide-transformations
+            glide_transformations             : 'jp.wasabeef:glide-transformations:3.3.0',
+            // If you want to use the GPU Filters
+            glide_transformations_gpuimage    : 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1',
+            // 一个可以在Glide加载时很方便使用Palette的库  https://github.com/florent37/GlidePalette
+            glide_palette                     : 'com.github.florent37:glidepalette:2.1.2',
+
+            // fresco https://github.com/facebook/fresco
+            fresco                            : 'com.facebook.fresco:fresco:1.10.0',
+            // 支持 GIF 动图，需要添加
+            fresco_animated_gif               : 'com.facebook.fresco:animated-gif:1.10.0',
+            // 在 API < 14 上的机器支持 WebP 时，需要添加
+            fresco_animated_base_support      : 'com.facebook.fresco:animated-base-support:1.10.0',
+            // 支持 WebP （静态图+动图），需要添加以下两个;仅支持 WebP 静态图，需要添加web support
+            fresco_webpsupport                : 'com.facebook.fresco:webpsupport:1.10.0',
+            fresco_animated_webp              : 'com.facebook.fresco:animated-webp:1.10.0',
+            // Image pipeline 默认使用HttpURLConnection。应用可以根据自己需求使用不同的网络库 OkHttp2
+            fresco_imagepipeline_okhttp       : 'com.facebook.fresco:imagepipeline-okhttp:1.10.0',
+            // Image pipeline 默认使用HttpURLConnection。应用可以根据自己需求使用不同的网络库 OkHttp3
+            fresco_imagepipeline_okhttp3      : 'com.facebook.fresco:imagepipeline-okhttp3:1.10.0',
+
+            // 加载图片第三方库 https://github.com/nostra13/Android-Universal-Image-Loader
+            image_loader                      : 'com.nostra13.universalimageloader:universal-image-loader:1.9.5',
+
+            // rx异步响应式
+            rxjava                            : 'io.reactivex.rxjava2:rxjava:2.1.0',
+            rxandroid                         : 'io.reactivex.rxjava2:rxandroid:2.0.1',
+            // RxBinding    https://github.com/JakeWharton/RxBinding
+            rxbinding                         : 'com.jakewharton.rxbinding2:rxbinding:2.1.1',
+            rxbinding_support_v4              : 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.1.1',
+            rxbinding_appcompat_v7            : 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.1.1',
+            rxbinding_design                  : 'com.jakewharton.rxbinding2:rxbinding-design:2.1.1',
+            rxbinding_recyclerview            : 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.1.1',
+            rxbinding_leanback                : 'com.jakewharton.rxbinding2:rxbinding-leanback-v17:2.1.1',
+
+            // Retrofit     Type-safe HTTP client for Android and Java by Square, Inc. http://square.github.io/retrofit/
+            retrofit                          : 'com.squareup.retrofit2:retrofit:2.3.0',
+            // 接收json 结果并解析成DAO
+            converter_gson                    : 'com.squareup.retrofit2:converter-gson:2.3.0',// Gson
+            converter_jackson                 : 'com.squareup.retrofit2:converter-jackson:2.3.0',// Jackson
+            converter_moshi                   : 'com.squareup.retrofit2:converter-moshi:2.3.0',// Moshi
+            converter_protobuf                : 'com.squareup.retrofit2:converter-protobuf:2.3.0',// Protobuf
+            converter_wire                    : 'com.squareup.retrofit2:converter-wire:2.3.0',// Wire
+            converter_simplexml               : 'com.squareup.retrofit2:converter-simplexml:2.3.0',// Simple XML
+            converter_scalars                 : 'com.squareup.retrofit2:converter-scalars:2.3.0',// Scalars
+            // rx+retrofit
+            retrofit_adapter_rxjava           : 'com.squareup.retrofit2:adapter-rxjava2:2.3.0',
+
+            // rxBus
+            rxbus                             : 'com.hwangjr.rxbus:rxbus:2.0.0',
+
+            // EventBus
+            eventbus                          : 'org.greenrobot:eventbus:3.1.1',
+
+            // 数据库  This is only needed if you want to use encrypted databases
+            greendao                          : 'org.greenrobot:greendao:3.2.2',
+            greendao_generator                : 'org.greenrobot:greendao-generator:3.2.2',
+            database_sqlcipher                : 'net.zetetic:android-database-sqlcipher:3.5.6',// 加密库依赖（可选项）
+
+            // 模块插槽
+            blockslot_compiler                : 'me.mooney:blockslot-compiler:1.0.2',// annotationProcessor
+            blockslot                         : 'me.mooney:blockslot:1.0.2',// compile
+            // 路由框架
+            mrouter_compiler                  : 'me.mooney:mrouter-compiler:0.1.0',// annotationProcessor
+            mrouter                           : 'me.mooney:mrouter:0.2.6',// compile
+            // auto_service
+            auto_service                      : 'com.google.auto.service:auto-service:1.0-rc2',// annotationProcessor
+
+            // butterKnife  注解注入
+            butterknife                       : 'com.jakewharton:butterknife:8.5.1',// compile
+            butterknife_compiler              : 'com.jakewharton:butterknife-compiler::8.5.1',// annotationProcessor
+
+            // 扫描二维码的依赖
+            zxing                             : 'me.dm7.barcodescanner:zxing:1.7.2',
+
+            // 七牛
+            qiniu                             : 'com.qiniu:qiniu-android-sdk:7.2.+',
+
+            //PushSDK必须依赖基础组件库，所以需要加入对应依赖
+//            umeng_common           : 'com.umeng.sdk:common:1.5.0',
+            umeng_common                      : 'com.umeng.sdk:common:latest.integration',
+            //PushSDK必须依赖utdid库，所以需要加入对应依赖
+//            umeng_utdid            : 'com.umeng.sdk:utdid:1.1.5.3',
+            umeng_utdid                       : 'com.umeng.sdk:utdid:latest.integration',
+            //PushSDK
+//            umeng_push             : 'com.umeng.sdk:push:4.1.0',
+            umeng_push                        : 'com.umeng.sdk:push:latest.integration',
+
+            // 友盟统计运营
+//            umeng_analytics        : 'com.umeng.sdk:analytics:7.5.0',
+            umeng_analytics                   : 'com.umeng.sdk:analytics:latest.integration',
+
+            // 自动集成的方式现在只支持微信，QQ，新浪三个平台，如果需要使用其它平台请选择手动集成
+            umeng_share_core                  : 'com.umeng.sdk:share-core:latest.integration',
+            umeng_share_qq                    : 'com.umeng.sdk:share-qq:6.9.1.1',
+            umeng_share_wechat                : 'com.umeng.sdk:share-wechat:latest.integration',
+            umeng_share_sina                  : 'com.umeng.sdk:share-sina:latest.integration',
+            // 分享面板
+            umeng_shareboard_widget           : 'com.umeng.sdk:shareboard-widget:latest.integration',
+            // TensorFlow
+            tensorflow                        : 'org.tensorflow:tensorflow-android:+',
+
+            // TinyPinyin核心包，约80KB  https://github.com/promeG/TinyPinyin
+            tinypinyin                        : 'com.github.promeg:tinypinyin:2.0.3',
+            // 可选，适用于Android的中国地区词典
+            tinypinyin_lexicons_android_cncity: 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3',
+
+            // 文字识别一般都用的 tess_two
+            // GitHub：https://github.com/tesseract-ocr/tesseract
+            // 而Android对应的比较推荐的有个tess-two。
+            // GitHub：https://github.com/rmtheis/tess-two
+            // 简书 https://www.jianshu.com/p/cc9ae05423a8
+            tess_two                          : 'com.rmtheis:tess-two:9.0.0',
+            // 开源计算机视觉库 需要添加OpenCV的maven仓库地址 http://dl.bintray.com/steveliles/maven
+            opencv                            : 'org.opencv:OpenCV-Android:3.1.0',
+    ]
+}

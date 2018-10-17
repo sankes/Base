@@ -1,0 +1,48 @@
+// 引入基础配置
+apply from: "ext.gradle"
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+    repositories {
+        google()
+        jcenter()
+        // Gradle 插件的仓库 by shankes , delete this after adding to JCenter
+//        maven {
+//            url "https://dl.bintray.com/shankes/maven"
+//        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        // bintray 将项目发布到JCenter所需要的依赖
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        // Gradle config plugin by shankes
+        classpath 'com.shankes.gradle.plugin:configPlugin:1.0.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+// 去除重复引入
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.support'
+                    && !details.requested.name.contains('multidex')) {
+                details.useVersion rootProject.ext.dependVersion.support
+            }
+        }
+    }
+}
