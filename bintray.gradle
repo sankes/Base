@@ -1,14 +1,14 @@
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-def siteUrl = 'https://github.com/sankes/Groovy'   // project homepage
-def issueUrl = 'https://github.com/sankes/Groovy/issues'
-def gitUrl = 'https://github.com/sankes/Groovy.git'
+def siteUrl = 'https://github.com/sankes/Base'   // project homepage
+def issueUrl = 'https://github.com/sankes/Base/issues'
+def gitUrl = 'https://github.com/sankes/Base.git'
 
 // 配置引用路径
-group = 'com.shankes.util' // 组名
-def package_artifact = "util"
-version = '1.0.0' // 版本
+group = 'com.shankes.base'      // 组名
+def package_artifact = "base"
+version = '1.0.0'               // 版本
 
 // 生成源文件
 task sourcesJar(type: Jar) {
@@ -49,7 +49,7 @@ install {
             project {
                 packaging 'aar'
                 artifactId package_artifact
-                name package_artifact  // 项目描述
+                name package_artifact       // 项目描述
                 url siteUrl                 // 项目主页
                 // 开源协议
                 licenses {
@@ -78,19 +78,19 @@ install {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
     bintray {
-        user = properties.getProperty("bintray.user")// local.properties文件中的bintray用户名
-        key = properties.getProperty("bintray.apikey")// local.properties文件中的bintray密码
+        user = properties.getProperty("bintray.user")   // local.properties文件中的bintray用户名
+        key = properties.getProperty("bintray.apikey")  // local.properties文件中的bintray密码
         configurations = ['archives']
         pkg {
             repo = 'maven'                  // 需要上传的仓库名
-            name = package_artifact               // 上传到jcenter的项目名
-            desc = 'android common util'    // 项目描述
+            name = package_artifact         // 上传到jcenter的项目名
+            desc = 'android base'           // 项目描述
             //userOrg = 'bintray_user'      // 可选的,不传的话默认是上面的user
             websiteUrl = siteUrl            // 项目的github地址
             issueTrackerUrl = issueUrl
             vcsUrl = gitUrl                 // git仓库地址这里的地址是不会验证的,随便输入都可以,不配置也可以
-            labels = ['android', 'util']
-            licenses = ['Apache-2.0']// 开源许可
+            labels = ['android', 'base']
+            licenses = ['Apache-2.0']       // 开源许可
             publish = true
         }
         override = true
