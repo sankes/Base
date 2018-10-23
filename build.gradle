@@ -8,9 +8,9 @@ buildscript {
         google()
         jcenter()
         // Gradle 插件的仓库 by shankes , delete this after adding to JCenter
-//        maven {
-//            url "https://dl.bintray.com/shankes/maven"
-//        }
+        maven {
+            url "https://dl.bintray.com/shankes/maven"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'

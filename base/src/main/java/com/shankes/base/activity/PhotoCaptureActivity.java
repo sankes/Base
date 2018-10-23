@@ -203,7 +203,7 @@ public class PhotoCaptureActivity extends Activity {
             getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(getImageByCamera, TAKE_PHOTO);
         } else {
-            Toast.makeText(getApplicationContext(), R.string.no_sd_card_hint, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.base_hint_no_sd_card, Toast.LENGTH_LONG).show();
         }
     }
 

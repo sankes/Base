@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">base</string>
-    <string name="no_sd_card_hint">请确认已经插入SD卡</string>
+    <string name="base_hint_no_sd_card">请确认已经插入SD卡</string>
 </resources>

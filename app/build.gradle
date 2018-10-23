@@ -101,4 +101,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 //    compile project(':util')
+    compile 'com.shankes.base:base:1.0.0'
 }
